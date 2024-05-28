@@ -12,15 +12,17 @@ import { TodoItem, TodoItemInterface } from "./TodoItem";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [todoList, setTodoList] = useState<TodoItemInterface[]>();
-  const [newTodo, setNewTodo] = useState<string>("");
+  const [todoList, setTodoList] = useState<TodoItemInterface[]>(); // to store the list of todos as an array
+  const [newTodo, setNewTodo] = useState<string>(""); // to store the string from the input field
 
   useEffect(() => {
+    // when opened, it will try to find a json string that is saved before inside local storage
     const storedJsonString = localStorage.getItem("todo-list");
     if (storedJsonString) {
       const storedObject = JSON.parse(storedJsonString);
       setTodoList(storedObject);
     } else {
+      // if not found, insert a sample todo item
       const sampleItem: TodoItemInterface = {
         isChecked: false,
         tasks: "Learn Mobile Development",
@@ -30,6 +32,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // when there's changes on todo list, it will save it to local storage
     if (todoList) {
       const jsonString = JSON.stringify(todoList);
       localStorage.setItem("todo-list", jsonString);
@@ -37,6 +40,7 @@ function App() {
   }, [todoList]);
 
   const addTodoHandler = () => {
+    // handle when a new to do list is added
     const trimmedNewTodo = newTodo.trim();
     if (trimmedNewTodo.length !== 0 && todoList) {
       const newTodoList = [...todoList];
@@ -51,6 +55,7 @@ function App() {
   };
 
   const onCheckedHandler = (idx: number) => {
+    // handle when an item is checked
     if (todoList) {
       const newTodoList = [...todoList];
       const changedTodo = newTodoList[idx];
@@ -61,6 +66,7 @@ function App() {
   };
 
   const onDeleteHandler = (idx: number) => {
+    // handle when an item is deleted
     if (todoList) {
       const newTodoList = [...todoList];
       newTodoList.splice(idx, 1);
@@ -71,8 +77,8 @@ function App() {
   return (
     <div className="px-4 py-4 max-w-screen-lg flex flex-col items-center w-full ">
       <div className="flex flex-row w-full justify-center">
-        <IoCheckmarkDoneSharp size="3rem" color="white" />
-        <Heading as="h1" className="italic" color="white">
+        <IoCheckmarkDoneSharp size="4rem" color="white" />
+        <Heading as="h1" className="italic" fontSize="xxx-large" color="white">
           ToDos
         </Heading>
       </div>

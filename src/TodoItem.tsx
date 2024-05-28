@@ -22,6 +22,7 @@ export function TodoItem({
       <Flex w="full" pt="0.25rem">
         <Checkbox
           onChange={onChecked}
+          // if checked, it will have a strike-through style
           as={isChecked ? "del" : undefined}
           checked={isChecked}
           className="border-gray-400 w-full"
