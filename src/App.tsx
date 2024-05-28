@@ -76,7 +76,7 @@ function App() {
 
   return (
     <div className="px-4 py-4 max-w-screen-lg flex flex-col items-center w-full ">
-      <div className="flex flex-row w-full justify-center">
+      <div className="flex flex-row w-full justify-center items-center">
         <IoCheckmarkDoneSharp size="4rem" color="white" />
         <Heading as="h1" className="italic" fontSize="xxx-large" color="white">
           ToDos
