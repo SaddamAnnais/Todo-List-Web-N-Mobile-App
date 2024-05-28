@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import { TodoItem } from "./TodoItem";
 
 function App() {
   return (
@@ -20,17 +21,21 @@ function App() {
       <Card w="100%" mt="1rem">
         <CardBody className="flex flex-row">
           <Input
-            borderColor="gray"
+            borderColor="gray.500"
             placeholder="What do you need to accomplish?"
             mr="1rem"
           />
           <Button colorScheme="blue">Add</Button>
         </CardBody>
       </Card>
-      <Card w="100%" mt="1rem">
+      <Card w="100%" mt="1rem" minH={"10vh"}>
         <CardBody className="flex flex-row">
-          <VStack bg="white" className="w-full h-full ">
-            <p>Placeholder for each tasks</p>
+          <VStack bg="white" className="w-full h-full" justifyItems="center">
+              <TodoItem isDeleted={false} />
+              <TodoItem isDeleted={false} />
+              <TodoItem isDeleted={false} />
+              <TodoItem isDeleted={false} />
+              <TodoItem isDeleted={false} />
           </VStack>
         </CardBody>
       </Card>
