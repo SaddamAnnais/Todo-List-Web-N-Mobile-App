@@ -1,23 +1,21 @@
 import { Checkbox, Divider, Flex } from "@chakra-ui/react";
-import { useState } from "react";
 
-interface TodoItemProps {
+export interface TodoItemProps {
   isDeleted: boolean;
+  tasks: string;
 }
 
-export function TodoItem({ isDeleted }: TodoItemProps) {
-  const [isItemDeleted, setIsItemDeleted] = useState(isDeleted);
-
+export function TodoItem({ isDeleted, tasks }: TodoItemProps) {
   return (
     <>
       <Flex w="full" pt="0.25rem">
         <Checkbox
-          onChange={(e) => setIsItemDeleted(e.target.checked)}
-          as={isItemDeleted ? "del" : undefined}
-          checked={isItemDeleted}
+          // onChange={(e) => setIsItemDeleted(e.target.checked)}
+          as={isDeleted ? "del" : undefined}
+          checked={isDeleted}
           className="border-gray-400 w-full"
         >
-          Placeholder for each tasks
+          {tasks}
         </Checkbox>
       </Flex>
       <Divider borderColor="gray.500" />
