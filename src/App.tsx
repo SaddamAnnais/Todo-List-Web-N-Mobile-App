@@ -4,21 +4,41 @@ import {
   CardBody,
   Heading,
   Input,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { TodoItem, TodoItemInterface } from "./TodoItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [todoList, setTodoList] = useState<TodoItemInterface[]>([
-    { isChecked: false, tasks: "asdasd" },
-  ]);
+  const [todoList, setTodoList] = useState<TodoItemInterface[]>();
   const [newTodo, setNewTodo] = useState<string>("");
+
+  useEffect(() => {
+    const storedJsonString = localStorage.getItem("todo-list");
+    if (storedJsonString) {
+      const storedObject = JSON.parse(storedJsonString);
+      setTodoList(storedObject);
+    } else {
+      const sampleItem: TodoItemInterface = {
+        isChecked: false,
+        tasks: "Learn Mobile Development",
+      };
+      setTodoList([sampleItem]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (todoList) {
+      const jsonString = JSON.stringify(todoList);
+      localStorage.setItem("todo-list", jsonString);
+    }
+  }, [todoList]);
 
   const addTodoHandler = () => {
     const trimmedNewTodo = newTodo.trim();
-    if (trimmedNewTodo.length !== 0) {
+    if (trimmedNewTodo.length !== 0 && todoList) {
       const newTodoList = [...todoList];
       const newTodoItem: TodoItemInterface = {
         tasks: trimmedNewTodo,
@@ -31,11 +51,21 @@ function App() {
   };
 
   const onCheckedHandler = (idx: number) => {
-    const newTodoList = [...todoList];
-    const changedTodo = newTodoList[idx];
-    changedTodo.isChecked = !changedTodo.isChecked;
-    newTodoList[idx] = changedTodo;
-    setTodoList(newTodoList);
+    if (todoList) {
+      const newTodoList = [...todoList];
+      const changedTodo = newTodoList[idx];
+      changedTodo.isChecked = !changedTodo.isChecked;
+      newTodoList[idx] = changedTodo;
+      setTodoList(newTodoList);
+    }
+  };
+
+  const onDeleteHandler = (idx: number) => {
+    if (todoList) {
+      const newTodoList = [...todoList];
+      newTodoList.splice(idx, 1);
+      setTodoList(newTodoList);
+    }
   };
 
   return (
@@ -64,12 +94,22 @@ function App() {
         <CardBody className="flex flex-row">
           <VStack bg="white" className="w-full h-full" justifyItems="center">
             {/* check if todo is empty */}
-            {todoList.length > 0 ? (
+            {todoList && todoList.length > 0 ? (
               todoList.map((todo, idx) => (
-                <TodoItem {...todo} onChecked={() => onCheckedHandler(idx)} />
+                <TodoItem
+                  key={idx}
+                  {...todo}
+                  onChecked={() => onCheckedHandler(idx)}
+                  onDelete={() => onDeleteHandler(idx)}
+                />
               ))
             ) : (
-              <p>Todo is empty</p>
+              <>
+                <img src="./congrats.gif" />
+                <Text fontWeight="semibold">
+                  The todo list is empty! Start adding one
+                </Text>
+              </>
             )}
           </VStack>
         </CardBody>

@@ -1,15 +1,22 @@
-import { Checkbox, Divider, Flex } from "@chakra-ui/react";
-
-interface TodoItemProps extends TodoItemInterface {
-  onChecked: () => void;
-}
+import { Button, Checkbox, Divider, Flex } from "@chakra-ui/react";
+import { FaTrashAlt } from "react-icons/fa";
 
 export interface TodoItemInterface {
   isChecked: boolean;
   tasks: string;
 }
 
-export function TodoItem({ isChecked, tasks, onChecked }: TodoItemProps) {
+interface TodoItemProps extends TodoItemInterface {
+  onChecked: () => void;
+  onDelete: () => void;
+}
+
+export function TodoItem({
+  isChecked,
+  tasks,
+  onChecked,
+  onDelete,
+}: TodoItemProps) {
   return (
     <>
       <Flex w="full" pt="0.25rem">
@@ -21,6 +28,9 @@ export function TodoItem({ isChecked, tasks, onChecked }: TodoItemProps) {
         >
           {tasks}
         </Checkbox>
+        <Button colorScheme="red" onClick={onDelete}>
+          <FaTrashAlt />
+        </Button>
       </Flex>
       <Divider borderColor="gray.500" />
     </>
