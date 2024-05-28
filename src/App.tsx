@@ -7,12 +7,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
-import { TodoItem, TodoItemProps } from "./TodoItem";
+import { TodoItem, TodoItemInterface } from "./TodoItem";
 import { useState } from "react";
 
 function App() {
-  const [todoList, setTodoList] = useState<TodoItemProps[]>([
-    { isDeleted: false, tasks: "asdasd" },
+  const [todoList, setTodoList] = useState<TodoItemInterface[]>([
+    { isChecked: false, tasks: "asdasd" },
   ]);
   const [newTodo, setNewTodo] = useState<string>("");
 
@@ -20,15 +20,24 @@ function App() {
     const trimmedNewTodo = newTodo.trim();
     if (trimmedNewTodo.length !== 0) {
       const newTodoList = [...todoList];
-      const newTodoItem: TodoItemProps = {
+      const newTodoItem: TodoItemInterface = {
         tasks: trimmedNewTodo,
-        isDeleted: false,
+        isChecked: false,
       };
       newTodoList.push(newTodoItem);
       setTodoList(newTodoList);
       setNewTodo("");
     }
   };
+
+  const onCheckedHandler = (idx: number) => {
+    const newTodoList = [...todoList];
+    const changedTodo = newTodoList[idx];
+    changedTodo.isChecked = !changedTodo.isChecked;
+    newTodoList[idx] = changedTodo;
+    setTodoList(newTodoList);
+  };
+
   return (
     <div className="px-4 py-4 max-w-screen-lg flex flex-col items-center w-full ">
       <div className="flex flex-row w-full justify-center">
@@ -56,7 +65,9 @@ function App() {
           <VStack bg="white" className="w-full h-full" justifyItems="center">
             {/* check if todo is empty */}
             {todoList.length > 0 ? (
-              todoList.map((todo) => <TodoItem {...todo} />)
+              todoList.map((todo, idx) => (
+                <TodoItem {...todo} onChecked={() => onCheckedHandler(idx)} />
+              ))
             ) : (
               <p>Todo is empty</p>
             )}

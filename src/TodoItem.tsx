@@ -1,18 +1,22 @@
 import { Checkbox, Divider, Flex } from "@chakra-ui/react";
 
-export interface TodoItemProps {
-  isDeleted: boolean;
+interface TodoItemProps extends TodoItemInterface {
+  onChecked: () => void;
+}
+
+export interface TodoItemInterface {
+  isChecked: boolean;
   tasks: string;
 }
 
-export function TodoItem({ isDeleted, tasks }: TodoItemProps) {
+export function TodoItem({ isChecked, tasks, onChecked }: TodoItemProps) {
   return (
     <>
       <Flex w="full" pt="0.25rem">
         <Checkbox
-          // onChange={(e) => setIsItemDeleted(e.target.checked)}
-          as={isDeleted ? "del" : undefined}
-          checked={isDeleted}
+          onChange={onChecked}
+          as={isChecked ? "del" : undefined}
+          checked={isChecked}
           className="border-gray-400 w-full"
         >
           {tasks}
